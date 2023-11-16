@@ -1,0 +1,142 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type TypeApartmentModel {
+  id: ID!
+  name: String!
+  apartments: [ApartmentModel!]!
+}
+
+type OptionModel {
+  id: ID!
+  name: String!
+  apartment_options: ApartmentOptionModel!
+}
+
+type ApartmentOptionModel {
+  id_apartment: Float!
+  id_option: Float!
+  apartment: ApartmentModel!
+  option: OptionModel!
+}
+
+type OwnerModel {
+  id: ID!
+  firstname: String!
+  lastname: String!
+  birthdate: DateTime!
+  account_number: Float!
+  is_subject_to_tva: Boolean!
+  apartments: [ApartmentModel!]!
+  person: PersonModel!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type PersonModel {
+  id: ID!
+  firstname: String!
+  lastname: String!
+  birthdate: DateTime!
+  owner: OwnerModel!
+  tenant: TenantModel!
+}
+
+type TenantModel {
+  id: ID!
+  firstname: String!
+  lastname: String!
+  birthdate: DateTime!
+  tenant_main: Boolean!
+  apartment: ApartmentModel!
+  person: PersonModel!
+}
+
+type ApartmentModel {
+  id: ID!
+  nb_rooms: Float!
+  nb_tenants_max: Float!
+  price: Float!
+  type: TypeApartmentModel!
+  building: BuildingModel!
+  apartment_options: [ApartmentOptionModel!]!
+  owner: OwnerModel!
+  tenants: [TenantModel!]!
+  tenant_main: TenantModel!
+  tenantMain: TenantModel!
+}
+
+type CommonEquipmentModel {
+  id: ID!
+  name: String!
+  building_equipments: [BuildingEquipmentModel!]!
+}
+
+type BuildingEquipmentModel {
+  id: ID!
+  building: BuildingModel!
+  equipment: CommonEquipmentModel!
+}
+
+type BuildingModel {
+  id: ID!
+  nb_floors: Float!
+  address: String!
+  zip: String!
+  city: String!
+  apartments: [ApartmentModel!]!
+  syndic: SyndicModel!
+  building_equipments: [BuildingEquipmentModel!]!
+}
+
+type SyndicModel {
+  id: ID!
+  name: String!
+  buildings: [BuildingModel!]
+}
+
+type Query {
+  syndic(id: Float!): SyndicModel!
+  syndics: [SyndicModel!]!
+  person(id: Float!): PersonModel!
+  persons: [PersonModel!]!
+  building(id: Float!): BuildingModel!
+  buildings: [BuildingModel!]!
+  apartment(id: Float!): ApartmentModel!
+  apartments: [ApartmentModel!]!
+}
+
+type Mutation {
+  createSyndic(syndicData: SyndicInput!): SyndicModel!
+  updateSyndic(id: Float!, syndicData: SyndicInput!): SyndicModel!
+  createBuilding(buildingData: BuildingInput!): BuildingModel!
+  updateBuilding(id: Float!, buildingData: BuildingInput!): BuildingModel!
+  createApartment(apartmentData: ApartmentInput!): ApartmentModel!
+  updateApartment(id: Float!, apartmentData: ApartmentInput!): ApartmentModel!
+}
+
+input SyndicInput {
+  name: String!
+}
+
+input BuildingInput {
+  nb_floors: Float!
+  address: String!
+  zip: String!
+  city: String!
+  syndic_id: Float!
+}
+
+input ApartmentInput {
+  nb_rooms: Float!
+  nb_tenants_max: Float!
+  price: Float!
+  type_id: Float!
+  building_id: Float!
+  owner_id: Float!
+  tenant_main_id: Float!
+}
